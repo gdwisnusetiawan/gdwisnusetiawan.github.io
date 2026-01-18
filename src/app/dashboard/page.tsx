@@ -22,7 +22,7 @@ export default function DashboardPage() {
             <Clock className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold font-mono text-white">{metrics.summary.totalHours.toLocaleString()} <span className="text-xs text-muted-foreground font-sans">hrs</span></div>
+            <div className="text-2xl font-bold font-mono text-white">{metrics.total_hours.toLocaleString()} <span className="text-xs text-muted-foreground font-sans">hrs</span></div>
             <p className="text-xs text-muted-foreground mt-1">Logged active coding time</p>
           </CardContent>
         </Card>
@@ -34,7 +34,7 @@ export default function DashboardPage() {
             <Zap className="h-4 w-4 text-yellow-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold font-mono text-white">{metrics.summary.totalTickets.toLocaleString()}</div>
+            <div className="text-2xl font-bold font-mono text-white">{metrics.total_tickets.toLocaleString()}</div>
             <p className="text-xs text-muted-foreground mt-1">Tasks completed to production</p>
           </CardContent>
         </Card>
@@ -46,7 +46,9 @@ export default function DashboardPage() {
             <BarChart2 className="h-4 w-4 text-blue-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold font-mono text-white">{metrics.summary.avgPerWeek} <span className="text-xs text-muted-foreground font-sans">hrs</span></div>
+            <div className="text-2xl font-bold font-mono text-white">
+                {Math.round(metrics.total_hours / (metrics.ticket_velocity.length * 4.3))} <span className="text-xs text-muted-foreground font-sans">hrs</span>
+            </div>
             <p className="text-xs text-muted-foreground mt-1 text-green-400">Consistent throughput</p>
           </CardContent>
         </Card>
@@ -61,7 +63,7 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent className="pl-0">
             <div className="h-[300px] w-full">
-                <VelocityChart data={metrics.velocity} />
+                <VelocityChart data={metrics.ticket_velocity} />
             </div>
           </CardContent>
         </Card>
@@ -73,7 +75,7 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
              <div className="h-[300px] w-full">
-                <DistributionChart data={metrics.distribution} />
+                <DistributionChart data={metrics.work_distribution} />
              </div>
           </CardContent>
         </Card>
