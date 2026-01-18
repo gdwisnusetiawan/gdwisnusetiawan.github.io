@@ -1,0 +1,40 @@
+---
+title: "Uptoo App"
+category: "SaaS • ERP • Production Software"
+summary: "A battle-tested ERP solution integrating Point of Sale, Inventory, and Financial Accounting, currently deployed in production across **6 medium-to-small enterprises** in Bali."
+role: "Lead Engineer"
+year: "2021"
+tech: ["Laravel", "PostgreSQL", "DataTables", "Spatie Permission (RBAC)"]
+links: {}
+---
+
+## **Real-World Impact**
+
+Unlike theoretical projects, Uptoo is a living system powering daily operations for:
+
+- **Medical Distribution:** PT. EDM & CV. DSU (Managing medical equipment inventory for hospitals/clinics).
+- **Automotive Services:** Nevel (Premium Motorbike Wash).
+- **Retail & F&B:** OGOOD (Health Foods), Teman Makan Bali (Food Influencer), Benelove (Dessert Foods).
+
+## **The Problem**
+
+Service-based businesses (like auto detailing) and distributors (like medical suppliers) have fundamentally different workflows, yet both suffer from the same "Software Disconnect": their POS doesn't talk to their Inventory, and their Inventory doesn't talk to their Accounting. This forces owners to manually reconcile 3 different systems, leading to financial leaks and stock discrepancies.
+
+## **The Solution**
+
+I engineered **Uptoo**, a unified ERP architecture adaptable to both **Service** and **Distribution** models.
+
+- **Hybrid POS System:** Handles mixed-basket transactions (e.g., selling a physical helmet + a washing service) in a single checkout flow, linked directly to a customer's specific vehicle history.
+- **Automated General Ledger:** Operational transactions (Sales/Purchases) automatically generate double-entry journals, ensuring the Balance Sheet and P&L are updated in real-time without manual accountant intervention.
+- **Batch-Aware Inventory:** Supports complex stock logic including batch tracking and expiry alerts—crucial for both medical supplies (EDM/DSU) and perishable retail goods (OGOOD).
+
+## **Engineering Highlight: Dynamic Polymorphic Reporting**
+
+The system's intelligence lies in the **ReportController** engine.
+
+- **The Challenge:** Different stakeholders need different data views. A CEO wants a visual margin chart, while an auditor needs a raw 10,000-row Excel dump.
+- **The Logic:** I built a **Dual-Mode Aggregation Engine**. It accepts dynamic criteria (Date Range, Product Category, Branch) and seamlessly switches output modes. It can render raw JSON for frontend widgets or server-side **DataTables** responses for heavy grid views.
+- **Complexity:** It performs real-time margin calculations by joining `Sales` → `Details` → `Products` → `Promos` on the fly, deriving Net Profit without storing redundant calculated columns in the database.
+
+## Visuals
+![Uptoo Dashboard](/assets/projects/uptoo/dashboard.png)

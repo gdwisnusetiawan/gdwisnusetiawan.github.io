@@ -1,0 +1,32 @@
+---
+title: "HumanVue"
+category: "HR Tech • CMS Architecture • Dynamic Systems"
+summary: "A dual-purpose Recruitment Management System (RMS) featuring an internal ATS for HR teams and a dynamic, block-based CMS that allows companies to build custom career portals without coding."
+role: "Lead Engineer"
+year: "2022"
+tech: ["Laravel", "PostgreSQL", "Bootstrap"]
+links: {}
+---
+
+## **The Problem**
+
+Standard HR platforms are rigid. Recruiters can manage applicants, but they rely on IT/Marketing to update the "Careers" page. Every time they want to change a banner or add a "Culture" section, it requires a developer ticket, slowing down the hiring process.
+
+## **The Solution**
+
+I engineered **HumanVue**, a system that decouples content from code.
+
+- **The "No-Code" Career Builder:** I built a dynamic CMS where admins can drag-and-drop "Blocks" (e.g., Hero, Testimonials, Job Grid) to construct their landing pages.
+- **Full-Cycle ATS:** A comprehensive Applicant Tracking System that manages candidates from "Applied" to "Hired" with granular filtering.
+- **Master Data Control:** Centralized management for multi-company structures, allowing a single parent group to manage hiring for multiple subsidiaries.
+
+## **Engineering Highlight: The Dynamic Block Architecture**
+
+The technical differentiator is the **File-System Discovery Engine** in `SectionController`.
+
+- **The Challenge:** How to allow users to create infinite page variations without storing HTML in the database (which is insecure and hard to maintain).
+- **The Logic:** I implemented a scanner that dynamically reads Blade templates from the `resources/views/layouts/blocks` directory. It exposes these templates as selectable "Options" in the UI. When a page renders, the system loops through the configured blocks and injects the specific Blade component on the fly.
+- **Why it matters:** It turns a static Laravel app into a dynamic Website Builder.
+
+## Visuals
+![HumanVue Builder](/assets/projects/human-vue/dashboard.png)

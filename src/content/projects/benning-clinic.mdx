@@ -1,0 +1,29 @@
+---
+title: "Benning Clinic"
+category: "HealthTech • Enterprise ERP • Regulatory Compliance"
+summary: "An all-in-one clinic management ecosystem that unifies internal operations (EMR, Pharmacy, Finance) while automating compliance with Indonesia's national **SatuSehat (FHIR)** health data platform."
+role: "Lead Engineer"
+year: "2021"
+tech: ["Laravel", "PostgreSQL", "Bootstrap", "SatuSehat API", "HL7 FHIR", "ICD-10", "ICD-9"]
+links: {}
+---
+
+## The Problem
+Clinics in Indonesia face a "Double Burden": they must manage complex business operations (drug inventory, patient billing) while strictly adhering to the Ministry of Health's mandate to sync all patient data with the **SatuSehat** platform. Doing this manually is impossible, leading to compliance risks and operational bottlenecks.
+
+## The Solution
+I engineered **Benning Clinic**, a compliant ERP designed to bridge internal operations with national standards.
+
+- **Automated Compliance:** The system automatically syncs Patient, Practitioner, and Encounter data to the Ministry of Health's platform in the background, ensuring 100% regulatory compliance without extra administrative work.
+- **Integrated Clinical Operations:** Features a full **Electronic Medical Record (EMR)** system with ICD-10 diagnosis tracking and medical photo documentation.
+- **Pharmacy & Finance:** A unified loop where a doctor's prescription automatically deducts inventory (FIFO) and generates a double-entry accounting journal for financial tracking.
+
+## Engineering Highlight: FHIR Interoperability Engine
+The technical core is the **HL7 FHIR Transformation Layer** in `SatuSehatService.php`.
+
+- **The Challenge:** The Ministry of Health uses the **HL7 FHIR** standard—a notoriously complex, deeply nested JSON format that does not match standard relational database structures.
+- **The Logic:** I built a **Data Mapper** that transforms flat SQL models (Patients, Rooms) into recursive FHIR resources. It handles complex logic like mapping administrative codes (Province/City) to specific URLs and nesting extensions deeply within the JSON payload.
+- **Resilience:** Implemented a robust **OAuth2 Token Manager** with Redis caching to handle session expiration gracefully, ensuring zero downtime during API syncs.
+
+## Visuals
+![Benning Clinic Dashboard](/assets/projects/benning-clinic/dashboard.png)

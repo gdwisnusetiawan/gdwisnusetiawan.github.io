@@ -1,0 +1,29 @@
+---
+title: "UKKH UBAYA System"
+category: "OrgTech • Organizational ERP • CMS"
+summary: "A specialized organizational ERP designed to digitize the complex staffing lifecycles—both structural tenures and ad-hoc event committees—for the Hindu Student Activity Unit at Ubaya University."
+role: "Full Stack Developer"
+year: "2020"
+tech: ["Laravel", "Bootstrap", "MySQL"]
+links: {}
+---
+
+## **The Problem**
+
+Student organizations face a unique data chaos: High turnover. Leadership changes every year (Structural), while event committees form and dissolve every few months (Ad-hoc). Managing this dynamic "who is doing what" data on spreadsheets led to lost history and confusing role overlaps.
+
+## **The Solution**
+
+I engineered **UKKH Web**, a centralized membership system that preserves institutional memory.
+
+- **Period Tracking:** The system treats time as a first-class citizen. It archives leadership structures by "Fiscal Year," preserving the history of who was Chairman in 2019 vs. 2020.
+- **Event Committee Workflow:** Created a centralized workflow where admins can spin up an Event and immediately recruit a committee from the member pool, tracking participation history automatically.
+- **Unified Member Profile:** A single database record tracks a student's entire journey—from "New Recruit" to "Event Staff" to "General Secretary."
+
+## **Engineering Highlight: Dual-Context Staffing Architecture**
+
+The technical core is the **Context-Aware Role Pattern**.
+
+- **The Challenge:** The title "Treasurer" exists in two contexts: the *Main Organization* (1-year term) and the *Valentine Event* (1-month term). Treating them as the same entity breaks database normalization; treating them as fully separate creates duplicate data.
+- **The Logic:** I implemented a **Dual-Context Relationship**. A central `Positions` table acts as a master dictionary. I built two parallel pivot structures (`Managements` and `Committees`) that bind Members to Positions within a specific *Time Context*.
+- **The Impact:** This flattened a complex 3-way relationship (Context → Position → Member) into a simple UI where admins can assign a "Treasurer" without worrying about which database table it belongs to.

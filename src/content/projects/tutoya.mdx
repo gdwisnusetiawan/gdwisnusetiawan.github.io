@@ -1,0 +1,28 @@
+---
+title: "Tutoya"
+category: "E-Commerce • Logistics Automation • Consumer Tech"
+summary: "A dedicated retail e-commerce engine designed for high-volume transactions, featuring automated logistics calculation, invoice generation, and integrated shipment tracking."
+role: "Backend Lead"
+year: "2021"
+tech: ["Laravel", "Vue.js", "RajaOngkir API", "Socialite (OAuth)"]
+links: {}
+---
+
+## **The Problem**
+
+Many e-commerce templates handle the "buying" part well but fail at the "post-purchase" experience. Merchants waste hours manually checking bank transfers against orders, and customers are left in the dark about shipping costs and tracking numbers, leading to high support ticket volumes.
+
+## **The Solution**
+
+I engineered **TUTOYA**, a retail-first platform focused on operational transparency.
+
+- **Automated Checkout Logic:** The system validates stock in real-time and calculates precise shipping costs across 3 major couriers (JNE, POS, TIKI) based on cart weight, ensuring the merchant never loses money on shipping underestimations.
+- **Self-Service Customer Dashboard:** Users have a dedicated portal to manage their entire lifecycle: checking order status, uploading payment proofs for verification, and downloading PDF invoices.
+- **Integrated Last-Mile Tracking:** Unlike standard shops that just email a tracking number, TUTOYA integrates directly with courier APIs to show shipment progress (e.g., J&T status) inside the user's dashboard.
+
+## **Engineering Highlight: The Shipping Aggregation Gateway**
+
+The technical core is the **Multi-Provider Logistics Gateway** in the `CheckoutController`.
+
+- **The Challenge:** Different couriers (JNE, POS, TIKI) use different API structures and response formats. Hardcoding them leads to brittle code.
+- **The Logic:** I built a **Logistics Transformer** that accepts dynamic inputs (Origin, Destination, Weight) and queries multiple external APIs asynchronously. It normalizes the dissimilar JSON responses into a standardized "Shipping Option" object for the frontend. This abstraction layer means the UI never breaks, even if an API changes its response format.

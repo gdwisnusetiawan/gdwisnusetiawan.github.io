@@ -1,0 +1,29 @@
+---
+title: "Rahina"
+category: "Cultural Tech • Algorithmic Design • Modern Frontend"
+summary: "A modern, scientifically accurate implementation of the Balinese Calendar (Wariga) that digitizes complex lunisolar cycles, holy day calculations, and traditional compatibility metrics for the digital age."
+role: "Solo Developer"
+year: "2025"
+tech: ["Next.js", "TypeScript", "Tailwind CSS", "Shadcn UI", "React", "Lucide React"]
+links: {}
+---
+
+## **The Problem**
+
+The Balinese calendar system is incredibly complex, running two concurrent systems: the 210-day *Pawukon* cycle and the lunar-solar *Sasih* cycle. Traditional paper calendars are static and often confusing for the younger generation. There was no modern, performant web app that could accurately calculate these attributes dynamically or explain the "Why" behind the dates.
+
+## **The Solution**
+
+I engineered **Rahina**, a Next.js 16 application that serves as a digital authority on Balinese timekeeping.
+
+- **Interactive Calendar:** A fully functional dashboard that visualizes the intersection of *Wewaran* (weeks), *Wuku* (30-week cycle), and *Sasih* (months) for any past or future date.
+- **Smart "Dewasa Ayu" Search:** A reverse-search engine that helps users find auspicious days for specific life events (weddings, building, farming) by filtering through thousands of potential date combinations against traditional rules.
+- **Cultural Tools:** Features a "Jodoh" (Compatibility) calculator and "Rerahinan" (Holy Day) automated reminder system.
+
+## **Engineering Highlight: The Lunisolar Engine**
+
+The technical core is the custom **Wariga Algorithm** in `src/lib/sasih.ts`.
+
+- **The Challenge:** Unlike the Gregorian calendar, the Balinese *Sasih* system requires complex intercalation (inserting leap months) to stay aligned with the solar year. Rules for this have changed historically (e.g., pre-1992 vs. post-1992).
+- **The Logic:** I wrote a custom TypeScript engine that handles **Cycle Intersections**. It calculates the overlap of up to 10 concurrent weekly cycles.
+- **Nampih Sasih (Leap Month) Logic:** The system implements a variant of the Metonic cycle algorithm to programmatically determine when to insert a "Leap Sasih" (Nampih), ensuring astronomical precision. It tracks "Tithis" (lunar days) cumulatively to account for *Ngunaratri* (skipped lunar days), a level of detail rarely found in digital converters.

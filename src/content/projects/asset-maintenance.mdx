@@ -1,0 +1,28 @@
+---
+title: "Asset Maintenance Manager"
+category: "Enterprise Software • Fleet Management • Distributed Architecture"
+summary: "An enterprise-grade Asset Maintenance System (AMS) that streamlines the entire lifecycle of fleet and equipment management, transitioning organizations from \"reactive repairs\" to \"proactive compliance.\""
+role: "Full Stack Engineer"
+year: "2021"
+tech: ["Laravel", "Vue.js", "PostgreSQL", "Laravel Passport", "Laravel Permission", "DomPDF"]
+links: {}
+---
+
+## The Problem
+Large organizations often struggle with **Data Silos** and **Reactive Maintenance**. The "Asset Register" lives in one master database, while maintenance logs live in spreadsheets. This disconnection leads to missed tax deadlines, expired insurance, and unmonitored fuel costs because there is no single view of asset health.
+
+## The Solution
+I engineered **Asset Maintenance Manager**, a centralized ERP designed for operational control.
+
+- **Proactive "Traffic Light" Dashboard:** I replaced static reports with a real-time warning engine. Assets automatically flag themselves as Green, Yellow, or Red based on expiring taxes, insurance, or service schedules (e.g., "Service due in 500km").
+- **Operational Intelligence:** A dedicated module for Fuel (BBM) tracking that automatically calculates efficiency based on odometer logs, identifying anomalous fuel consumption.
+- **Cost Governance:** Implemented a multi-tiered approval workflow to ensure high-value maintenance requests pass through the correct management chains before budget release.
+
+## Engineering Highlight
+**Distributed Multi-Database Architecture**
+
+The technical differentiator is the **Satellite Module Pattern** used to handle data sovereignty.
+
+- **The Challenge:** The organization demanded a "Single Source of Truth" for core asset data but needed a separate, agile system for maintenance. Duplicating the asset database was not an option.
+- **The Logic:** I architected a **Multi-Connection Model**. The `Asset` entity connects directly to a remote, centralized `master` PostgreSQL database (Read-Only), while the local application manages the write-heavy maintenance records.
+- **The Complexity:** This required careful handling of **Cross-Database Relationships** in Laravel. I implemented a robust "Proactive Engine" in the `DashboardController` that aggregates these distributed data points and uses **Collection Pipelining** to filter millions of potential records down to a prioritized "Action Required" list (e.g., `days_left <= 30`) in milliseconds.

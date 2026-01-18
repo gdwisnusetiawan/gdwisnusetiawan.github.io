@@ -1,0 +1,29 @@
+---
+title: "Upframework"
+category: "Backend Engineering • High-Performance Systems • Clean Architecture"
+summary: "A production-ready, modular Go framework designed to scale the 'Uptoday' psychometric platform, handling high-concurrency assessment sessions with enterprise-grade observability and transactional integrity."
+role: "Architect"
+year: "2024"
+tech: ["Go", "Fiber", "PostgreSQL", "Jaeger", "Domain-Driven Design"]
+links: {}
+---
+
+## **The Problem**
+
+Psychometric testing in schools creates massive "burst" traffic: hundreds of students login and submit answers at the exact same second. Traditional monolithic architectures can struggle with race conditions during scoring and lack visibility into specific bottleneck points during these high-load events.
+
+## **The Solution**
+
+I engineered **Upframework**, a high-performance backend rewritten in **Go (Fiber)**.
+
+- **Clean Architecture:** Strictly enforced separation of concerns (Domain, Usecase, Repository) ensures the system remains modular and testable.
+- **Enterprise Observability:** Integrated **OpenTelemetry (OTEL)** with Jaeger and Prometheus. This allows me to trace a single request across the entire stack and visualize bottlenecks (e.g., "Database Locked for 200ms") in real-time.
+- **Modular Domain Design:** The system is decoupled into isolated domains (Education vs. Psychometric), allowing them to scale independently.
+
+## **Engineering Highlight: Polymorphic Scoring Engine**
+
+The core complexity lives in the `AssessmentSessionParticipantScoreUsecase`.
+
+- **The Challenge:** Different tests use radically different scoring math. VARK is simple summation; DISC requires complex "Lookup Maps" to convert raw counts into standardized profiles; SPM requires logic verification.
+- **The Logic:** I implemented a **Polymorphic Strategy Pattern**. The scoring engine inspects the `InstrumentID` and dynamically swaps algorithms at runtime (e.g., switching from a `CountByKeys` aggregator to a `DiscScale` lookup).
+- **Concurrency Control:** To ensure accuracy during high-load writes, I wrapped the entire "Read-Compute-Write" cycle in a **Serializable Transaction** (`pgx.Serializable`). This guarantees that even if a student spams the "Submit" button, the score is calculated exactly once without race conditions.

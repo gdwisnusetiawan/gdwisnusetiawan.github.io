@@ -1,0 +1,32 @@
+---
+title: "SPBE E-Government Suite"
+category: "GovTech • Enterprise ERP • System Architecture"
+summary: "A comprehensive 'Smart Government' ecosystem designed to digitize the entire lifecycle of the Electronic-Based Government System (SPBE)—from strategic planning and budgeting to master plan execution and maturity maturity auditing."
+role: "Full Stack Engineer"
+year: "2020"
+tech: ["Laravel", "PostgreSQL", "Bootstrap", "Chart.js", "Laravel Excel", "DomPDF"]
+links: {}
+---
+
+## **The Problem**
+
+City governments (Kominfo/Bappeda) struggled with fragmented governance.
+
+- **Subjective Planning:** Departments (OPDs) proposed budget-heavy apps without objective justification.
+- **Siloed Monitoring:** There was no centralized way to track "Planned" vs. "Realized" IT assets across 8 different domains (Infrastructure, Security, Apps, etc.).
+- **Manual Audits:** Measuring the government's "Digital Maturity Index" was a manual, spreadsheet-heavy nightmare.
+
+## **The Solution**
+
+I engineered a **Unified Laravel-Based Suite** consisting of three integrated modules:
+
+- **The Planning Module:** A proposal system featuring an **Algorithmic Complexity Calculator** that automatically scores project requests (Small vs. Large scale) to prevent budget inflation.
+- **The Master Plan Module:** An ERP dashboard that aggregates data from 8+ domains to visualize the "Gap Analysis" between strategic goals and actual implementation using dynamic Spider Charts.
+- **The Index Evaluation Module:** A maturity assessment tool using a **Weighted Composite Index** to score agencies against national standards.
+
+## **Engineering Highlight: Algorithmic Decision Support**
+
+The suite's value lies in removing human bias through code.
+
+- **The "Complexity Engine" (`App\Complexity::calculate`):** I wrote a weighted scoring algorithm that processes **8 technical vectors** (e.g., integration potential, user concurrency, database scale). It applies conditional multipliers (e.g., 2x for >50 tables) to mathematically classify projects, ensuring objective budget allocation.
+- **Polymorphic Data Aggregation:** The Evaluation System uses a **Polymorphic Design Pattern** to calculate maturity scores. The same calculation logic (`morphTo`) is reused across different entity levels (Provincial → Regency → Agency), adhering strictly to DRY principles while handling massive hierarchical data.

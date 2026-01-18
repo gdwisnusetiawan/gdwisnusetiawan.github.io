@@ -1,0 +1,25 @@
+---
+title: "Certificate Generator"
+category: "EdTech • Backend Architecture • Legacy Modernization"
+summary: "An intelligent certification system that automates the validation of soft skills by aggregating student academic and extracurricular achievements into official credentials."
+role: "Full Stack Engineer"
+year: "2019"
+tech: ["Native PHP", "MySQL", "TCPDF", "PHPExcel", "PHPMailer", "AdminLTE"]
+links: {}
+---
+
+## The Problem
+University faculty faced a significant administrative bottleneck: manually evaluating thousands of student activities (from seminars to leadership roles) against standardized soft skill requirements. The process was subjective, prone to error, and time-consuming, requiring staff to manually calculate "points" across different scopes (National vs. Local) and levels.
+
+## The Solution
+I engineered a **Role-Based Certification Platform** that digitizes the entire lifecycle of soft skill validation.
+
+- **Automated Logic:** Students simply upload evidence; the system automatically maps these inputs against a complex matrix of requirements to determine eligibility.
+- **Dynamic Generation:** Replaced manual printing with a programmatic PDF engine (TCPDF) that generates official certificates on-the-fly, stamping them with dynamic signatures and unique validation IDs.
+- **Legacy Robustness:** Built a custom compatibility layer (`mysql_` shim) allowing this native codebase to deploy securely on modern PHP 7+ infrastructure without a full rewrite.
+
+## Engineering Highlight
+The core innovation is a custom **Multi-Dimensional Intersection Algorithm** located in the `c_sertifikat.php` class.
+
+- **The Challenge:** Mapping is not 1-to-1. A "Chairperson" role at a "National Event" satisfies higher competency requirements than a "Member" at a "Local Event."
+- **The Logic:** I implemented a hierarchy processing engine that loops through defining tables (`posisi`, `ruang_lingkup`) to find attribute matches. It features a **deduplication algorithm** that intelligently filters results—if a student qualifies for both "Level 1" and "Level 2" Leadership, the system automatically prioritizes the highest achievement to ensure the certificate reflects their best work.

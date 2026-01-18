@@ -1,0 +1,31 @@
+---
+title: "The Wedding Invitation"
+category: "Event Tech • Modern Frontend • UX Design"
+summary: "A personalized digital invitation platform featuring a secure guest management dashboard and a synchronized multimedia experience, built with the latest Nuxt 3 ecosystem."
+role: "The Groom & Dev"
+year: "2025"
+tech: ["Nuxt.js", "TailwindCSS", "Pinia", "SQLite", "Prisma", "Bcrypt", "JWT", "PrimeVue"]
+links: {}
+---
+
+### **The Problem**
+
+Traditional wedding invitations are static and difficult to track. Couples often struggle with managing guest lists across spreadsheets, and digital alternatives are often just static HTML pages that lack interactivity or personalization for the guest.
+
+### **The Solution**
+
+I engineered a **Full-Stack Nuxt Application** that serves as both a guest portal and an admin tool.
+
+- **Dynamic Personalization:** Guests receive unique encoded links (e.g., `?to=FamilyName`) that render a personalized greeting on the landing page, making the digital experience feel intimate.
+- **Guest Management Dashboard:** Built a secure `/admin` interface where the couple can create, update, and delete guest entries or family groups, replacing the need for messy Excel sheets.
+- **Interactive Event Hub:** Provides a central location for RSVP, location maps, and gift registries.
+
+### **Engineering Highlight: Reactive Multimedia Synchronization**
+
+The technical differentiator is the **State-Driven Audio Engine** in `pages/index.vue`.
+
+- **The Challenge:** The page features both background music (for ambiance) and a video greeting. A common UX failure is having both audio sources play simultaneously, creating a chaotic noise clash.
+- **The Logic:** I implemented a **Reactive State Watcher** using Vue's `watch` effect. The system monitors the video player's state in real-time.
+    - When the user hits "Play" on the video (`isVideoPlaying = true`), the global background music automatically fades out/pauses.
+    - When the video ends or pauses, the music resumes intelligently after a smooth 2-second buffer.
+- **Why it matters:** This attention to "micro-interactions" demonstrates a level of polish and UX awareness that separates "coding" from "product engineering."

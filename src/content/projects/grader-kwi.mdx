@@ -1,0 +1,28 @@
+---
+title: "Grader KWI"
+category: "EdTech • Backend Systems • Data Integrity"
+summary: "A comprehensive Academic Management System (AMS) that digitizes the entire university grading lifecycle, offering granular role management and automated academic calculations."
+role: "Lead Developer"
+year: "2019"
+tech: ["Laravel", "MySQL", "Laravel Excel", "Bootstrap"]
+links: {}
+---
+
+## **The Problem**
+
+Academic institutions often rely on fragmented spreadsheets to track student performance, leading to calculation errors, version control issues, and security vulnerabilities. Administrators struggled to manage complex class schedules, parallel sessions, and weighted grade components manually, resulting in delays during the final grading period.
+
+## **The Solution**
+
+I engineered **GraderKWI**, a centralized Laravel-based platform that enforces data integrity across the academic ecosystem.
+
+- **Automated Grade Engine:** Eliminated manual calculation errors by building a system that instantly computes final weighted averages (NA) and letter grades (A-E) as soon as raw scores are entered.
+- **Granular Access Control:** Implemented a robust RBAC (Role-Based Access Control) system using custom middleware to ensure strict data separation between Admins, Lecturers, and Students.
+- **Bulk Operations:** Streamlined administrative workflows with high-performance Excel/CSV import-export features for processing thousands of student records in seconds.
+
+## **Engineering Highlight: Atomic Grade Encapsulation**
+
+The system's core value lies in the **Data Integrity Logic** encapsulated within the `Grade` model.
+
+- **The Challenge:** Grading isn't just data entry; it's a chain reaction. Changing one assignment score affects the semester average, the letter grade, and the student's academic standing.
+- **The Logic:** I wrote a recursive `calculateGrade` function that triggers atomically whenever a score is touched. It fetches all related components, applies configuration-specific weights (e.g., Assignments vs. Midterms), determines the relative grade threshold (Nisbi), and updates the master record in real-time. This ensures the database never holds "stale" or conflicting academic data.

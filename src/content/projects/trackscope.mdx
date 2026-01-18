@@ -1,0 +1,29 @@
+---
+title: "Trackscope"
+category: "Company Profile • Content Management Systems • IoT Integration"
+summary: "A fully dynamic Content Management System (CMS) empowering businesses to control their entire digital presence—from portfolio showcases to lead generation—through a centralized, code-free dashboard."
+role: "Full Stack Developer"
+year: "2020"
+tech: ["Laravel", "Bootstrap", "Google reCAPTCHA", "MySQL"]
+links: {}
+---
+
+## **The Problem**
+
+Small to medium business owners often feel trapped by static websites. Simple updates—like changing a phone number or adding a new portfolio item—usually require hiring a developer. Furthermore, inbound leads often get lost in spam folders because there is no centralized system to validate and store visitor inquiries.
+
+## **The Solution**
+
+I engineered **Trackscope**, a bespoke CMS designed for autonomy.
+
+- **Dynamic Landing Pages:** The frontend is not hardcoded. It dynamically renders the "Hero" banner, "About Us" section, and "Service" cards based on real-time database entries.
+- **Secure Admin Dashboard:** A protected backend allows non-technical staff to perform full CRUD (Create, Read, Update, Delete) operations on their business portfolio and services.
+- **Lead Capture Engine:** Integrated a visitor inquiry system fortified with **Google reCAPTCHA** to block bots, storing valid leads directly in an admin inbox for immediate follow-up.
+
+## **Engineering Highlight: The Unified State Aggregator**
+
+The technical standout is the **Single-Request Data Aggregation** pattern in the `GuestController`.
+
+- **The Challenge:** A rich "Single Page Application" feel often requires dozens of API calls to fetch profiles, galleries, contacts, and services, causing slow load times.
+- **The Logic:** I implemented a unified aggregation query in the `index()` method. It eagerly loads **seven unique data models** (Profile, Content, Gallery, etc.) in a single controller action.
+- **Memory vs. Database:** Instead of hitting the database repeatedly, I utilized **Laravel Collections** to filter data in-memory. For example, the system fetches all contacts once, then uses `>where('layout', 'social media')` to extract specific channels (like WhatsApp) programmatically. This reduces database stress and ensures the landing page loads instantly.

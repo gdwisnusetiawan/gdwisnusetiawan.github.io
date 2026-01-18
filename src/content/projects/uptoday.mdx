@@ -1,0 +1,29 @@
+---
+title: "Uptoday"
+category: "EdTech • SaaS • Assessment Platforms"
+summary: "A specialized school management and psychometric testing platform that digitizes standard psychological assessments (like VARK & SPM) to provide automated, instant student performance insights."
+role: "Solo Founder"
+year: "2022"
+tech: ["Laravel", "Bootstrap", "PostgreSQL", "Spatie Permission (RBAC)", "DomPDF"]
+links: {}
+---
+
+### **The Problem**
+
+Traditional psychological testing in schools is logistically painful. Psychologists hand out hundreds of paper forms, manually grade them (prone to error), and spend weeks typing up individual PDF reports for parents. By the time the data is ready, it’s often too late to act on.
+
+### **The Solution**
+
+I engineered **Uptoday**, a digital assessment engine designed for scale.
+
+- **Digitized Standard Tests:** Transformed physical VARK and SPM tests into interactive, timed digital sessions.
+- **Instant Interpretation:** The system doesn't just score "A vs B"; it automatically maps raw scores to psychological profiles and generates detailed PDF reports for parents instantly upon completion.
+- **Multi-School Architecture:** Built to support a SaaS model where a single "Super Admin" can manage multiple schools, classes, and student cohorts securely.
+
+### **Engineering Highlight: The Test Session State Machine**
+
+The core complexity is the **Session Control Logic** in `TestSessionQuestionController`.
+
+- **The Challenge:** Psychological tests require strict integrity. Students cannot skip questions, jump backward, or restart a timer once it begins.
+- **The Logic:** I implemented a robust **State Machine** that tracks the user's journey (`started` → `in_progress` → `finished`). It enforces strict flow control, preventing "back-button cheating" and calculating completion percentages in real-time.
+- **Polymorphism:** The controller is designed to be test-agnostic. It handles the logic for completely different test structures (VARK's personality questions vs. SPM's logic puzzles) within a single normalized data flow.

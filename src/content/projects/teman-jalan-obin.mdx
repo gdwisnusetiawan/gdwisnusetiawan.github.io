@@ -1,0 +1,28 @@
+---
+title: "Teman Jalan Obin"
+category: "Travel Tech • E-Commerce • API Integration"
+summary: "A hybrid travel-commerce platform that simplifies the adventure experience by combining tour booking with a seamless, logistics-aware marketplace for travel essentials."
+role: "Mobile Developer"
+year: "2021"
+tech: ["Laravel", "Vue.js", "RajaOngkir API", "Socialite OAuth", "Google Recaptcha", "MySQL"]
+links: {}
+---
+
+## **The Problem**
+
+Most travel sites are fragmented: you book a tour on one site and buy gear on another. Furthermore, calculating accurate shipping costs for physical goods across the Indonesian archipelago (and internationally) is a logistical nightmare for admins, often leading to undercharged shipping and lost revenue.
+
+## **The Solution**
+
+I engineered **Teman Jalan Obin**, a unified platform that handles both service bookings and physical product logistics.
+
+- **Unified Checkout:** Built a validation-backed cart system that allows users to book tour packages and purchase physical merchandise in a single flow.
+- **Automated Logistics:** Removed manual calculation by integrating the **RajaOngkir API**. The system auto-calculates precise shipping costs in real-time across multiple couriers (JNE, POS, TIKI) based on weight and destination.
+- **Global Accessibility:** Implemented dynamic **Multi-Currency Support** that auto-converts product prices and shipping fees, ensuring international tourists see costs in their native currency.
+
+## **Engineering Highlight: The Multi-Courier Logistics Engine**
+
+The core complexity lies in the **External API Orchestration** located in `ShipmentController`.
+
+- **The Challenge:** Shipping logic is non-linear. Domestic shipping requires City-to-City logic, while international requires Country-to-Country logic, and different couriers return data in different formats.
+- **The Logic:** I built a **Logistics Abstraction Layer** (`App\Helpers\Shipment`) that normalizes these differences. It intelligently toggles between domestic and international API endpoints based on the user's address. It then aggregates rates from multiple providers, filters them for availability, and applies a real-time currency conversion wrapper, delivering a normalized "final price" to the frontend in milliseconds.
