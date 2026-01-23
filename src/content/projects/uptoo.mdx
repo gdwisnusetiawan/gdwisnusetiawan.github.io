@@ -8,6 +8,8 @@ tech: ["Laravel", "PostgreSQL", "DataTables", "Spatie Permission (RBAC)"]
 links: {}
 ---
 
+import { BentoGallery } from '@/components/mdx/bento-gallery'
+
 ## **Real-World Impact**
 
 Unlike theoretical projects, Uptoo is a living system powering daily operations for:
@@ -37,4 +39,15 @@ The system's intelligence lies in the **ReportController** engine.
 - **Complexity:** It performs real-time margin calculations by joining `Sales` → `Details` → `Products` → `Promos` on the fly, deriving Net Profit without storing redundant calculated columns in the database.
 
 ## Visuals
-![Uptoo Dashboard](/assets/projects/uptoo/dashboard.png)
+
+<BentoGallery images={[
+  '/assets/projects/uptoo/screencapture-ogoodx-nevelindonesia-admin-dashboard-2026-01-18-01_37_10.png',
+  '/assets/projects/uptoo/screencapture-ogoodx-nevelindonesia-admin-inventory-stock-card-2026-01-18-01_35_22.png',
+  '/assets/projects/uptoo/screencapture-ogoodx-nevelindonesia-admin-inventory-stock-history-2026-01-18-01_35_40.png',
+  '/assets/projects/uptoo/screencapture-ogoodx-nevelindonesia-admin-payment-history-2026-01-18-01_36_22.png',
+  '/assets/projects/uptoo/screencapture-ogoodx-nevelindonesia-admin-point-of-sale-2026-01-18-01_31_49.png',
+  '/assets/projects/uptoo/screencapture-ogoodx-nevelindonesia-admin-point-of-sale-2026-01-18-01_32_26.png',
+  '/assets/projects/uptoo/screencapture-ogoodx-nevelindonesia-admin-point-of-sale-2026-01-18-01_32_34.png',
+  '/assets/projects/uptoo/screencapture-ogoodx-nevelindonesia-admin-sales-transaction-sales-2026-01-18-01_34_14.png',
+  '/assets/projects/uptoo/screencapture-ogoodx-nevelindonesia-admin-sales-transaction-sales-INV260001-2026-01-18-01_34_27.png',
+]} />

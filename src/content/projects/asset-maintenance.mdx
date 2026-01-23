@@ -8,6 +8,8 @@ tech: ["Laravel", "Vue.js", "PostgreSQL", "Laravel Passport", "Laravel Permissio
 links: {}
 ---
 
+import { BentoGallery } from '@/components/mdx/bento-gallery'
+
 ## The Problem
 Large organizations often struggle with **Data Silos** and **Reactive Maintenance**. The "Asset Register" lives in one master database, while maintenance logs live in spreadsheets. This disconnection leads to missed tax deadlines, expired insurance, and unmonitored fuel costs because there is no single view of asset health.
 
@@ -26,3 +28,19 @@ The technical differentiator is the **Satellite Module Pattern** used to handle 
 - **The Challenge:** The organization demanded a "Single Source of Truth" for core asset data but needed a separate, agile system for maintenance. Duplicating the asset database was not an option.
 - **The Logic:** I architected a **Multi-Connection Model**. The `Asset` entity connects directly to a remote, centralized `master` PostgreSQL database (Read-Only), while the local application manages the write-heavy maintenance records.
 - **The Complexity:** This required careful handling of **Cross-Database Relationships** in Laravel. I implemented a robust "Proactive Engine" in the `DashboardController` that aggregates these distributed data points and uses **Collection Pipelining** to filter millions of potential records down to a prioritized "Action Required" list (e.g., `days_left <= 30`) in milliseconds.
+
+## Visuals
+
+<BentoGallery images={[
+  '/assets/projects/asset-maintenance/screencapture-maintenance-approval-2026-01-17-03_52_58.png',
+  '/assets/projects/asset-maintenance/screencapture-maintenance-asset-2026-01-17-03_51_41.png',
+  '/assets/projects/asset-maintenance/screencapture-maintenance-asuransi-2026-01-17-03_52_21.png',
+  '/assets/projects/asset-maintenance/screencapture-maintenance-bbm-2026-01-17-03_52_10.png',
+  '/assets/projects/asset-maintenance/screencapture-maintenance-dashboard-2026-01-17-03_51_24.png',
+  '/assets/projects/asset-maintenance/screencapture-maintenance-pajak-tahunan-2026-01-17-03_52_31.png',
+  '/assets/projects/asset-maintenance/screencapture-maintenance-pajak-tahunan5-2026-01-17-03_52_39.png',
+  '/assets/projects/asset-maintenance/screencapture-maintenance-reminder-2026-01-17-03_53_06.png',
+  '/assets/projects/asset-maintenance/screencapture-maintenance-request-2026-01-17-03_53_13.png',
+  '/assets/projects/asset-maintenance/screencapture-maintenance-service-2026-01-17-03_51_55.png',
+  '/assets/projects/asset-maintenance/screencapture-maintenance-status-kendaraan-2026-01-17-03_52_50.png',
+]} />

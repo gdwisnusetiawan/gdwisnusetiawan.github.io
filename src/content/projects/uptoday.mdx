@@ -8,11 +8,13 @@ tech: ["Laravel", "Bootstrap", "PostgreSQL", "Spatie Permission (RBAC)", "DomPDF
 links: {}
 ---
 
-### **The Problem**
+import { BentoGallery } from '@/components/mdx/bento-gallery'
+
+## **The Problem**
 
 Traditional psychological testing in schools is logistically painful. Psychologists hand out hundreds of paper forms, manually grade them (prone to error), and spend weeks typing up individual PDF reports for parents. By the time the data is ready, it’s often too late to act on.
 
-### **The Solution**
+## **The Solution**
 
 I engineered **Uptoday**, a digital assessment engine designed for scale.
 
@@ -20,10 +22,29 @@ I engineered **Uptoday**, a digital assessment engine designed for scale.
 - **Instant Interpretation:** The system doesn't just score "A vs B"; it automatically maps raw scores to psychological profiles and generates detailed PDF reports for parents instantly upon completion.
 - **Multi-School Architecture:** Built to support a SaaS model where a single "Super Admin" can manage multiple schools, classes, and student cohorts securely.
 
-### **Engineering Highlight: The Test Session State Machine**
+## **Engineering Highlight: The Test Session State Machine**
 
 The core complexity is the **Session Control Logic** in `TestSessionQuestionController`.
 
 - **The Challenge:** Psychological tests require strict integrity. Students cannot skip questions, jump backward, or restart a timer once it begins.
 - **The Logic:** I implemented a robust **State Machine** that tracks the user's journey (`started` → `in_progress` → `finished`). It enforces strict flow control, preventing "back-button cheating" and calculating completion percentages in real-time.
 - **Polymorphism:** The controller is designed to be test-agnostic. It handles the logic for completely different test structures (VARK's personality questions vs. SPM's logic puzzles) within a single normalized data flow.
+
+## Visuals
+
+<BentoGallery images={[
+  '/assets/projects/uptoday/screencapture-admin-dashboard-2026-01-17-23_55_03.png',
+  '/assets/projects/uptoday/screencapture-admin-test-test-history-2026-01-18-00_04_07.png',
+  '/assets/projects/uptoday/screencapture-admin-test-test-history-2026-01-18-00_08_55.png',
+  '/assets/projects/uptoday/screencapture-admin-test-test-history-2319-2026-01-18-00_09_19.png',
+  '/assets/projects/uptoday/screencapture-admin-test-test-history-2320-2026-01-18-00_09_04.png',
+  '/assets/projects/uptoday/screencapture-admin-test-test-session-ts0023-question-2026-01-17-23_55_25.png',
+  '/assets/projects/uptoday/screencapture-admin-test-test-session-ts0023-question-2026-01-17-23_59_13.png',
+  '/assets/projects/uptoday/screencapture-admin-test-test-session-ts0023-question-spm-spmq0001-2026-01-17-23_55_34.png',
+  '/assets/projects/uptoday/screencapture-admin-test-test-session-ts0023-question-spm-spmq0060-2026-01-17-23_59_06.png',
+  '/assets/projects/uptoday/screencapture-admin-test-test-session-ts0024-question-2026-01-17-23_59_28.png',
+  '/assets/projects/uptoday/screencapture-admin-test-test-session-ts0024-question-2026-01-18-00_00_26.png',
+  '/assets/projects/uptoday/screencapture-admin-test-test-session-ts0024-question-vark-varkq0001-2026-01-17-23_59_38.png',
+  '/assets/projects/uptoday/screencapture-admin-test-test-session-ts0024-question-vark-varkq0016-2026-01-18-00_00_19.png',
+  '/assets/projects/uptoday/screencapture-home-2026-01-18-00_01_26.png',
+]} />

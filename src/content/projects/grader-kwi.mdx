@@ -8,6 +8,8 @@ tech: ["Laravel", "MySQL", "Laravel Excel", "Bootstrap"]
 links: {}
 ---
 
+import { BentoGallery } from '@/components/mdx/bento-gallery'
+
 ## **The Problem**
 
 Academic institutions often rely on fragmented spreadsheets to track student performance, leading to calculation errors, version control issues, and security vulnerabilities. Administrators struggled to manage complex class schedules, parallel sessions, and weighted grade components manually, resulting in delays during the final grading period.
@@ -26,3 +28,12 @@ The system's core value lies in the **Data Integrity Logic** encapsulated within
 
 - **The Challenge:** Grading isn't just data entry; it's a chain reaction. Changing one assignment score affects the semester average, the letter grade, and the student's academic standing.
 - **The Logic:** I wrote a recursive `calculateGrade` function that triggers atomically whenever a score is touched. It fetches all related components, applies configuration-specific weights (e.g., Assignments vs. Midterms), determines the relative grade threshold (Nisbi), and updates the master record in real-time. This ensures the database never holds "stale" or conflicting academic data.
+
+## Visuals
+
+<BentoGallery images={[
+  '/assets/projects/grader-kwi/screencapture-2026-01-16-14_54_36.png',
+  '/assets/projects/grader-kwi/screencapture-grade-types-2026-01-16-14_59_16.png',
+  '/assets/projects/grader-kwi/screencapture-grades-2026-01-16-14_54_58.png',
+  '/assets/projects/grader-kwi/screencapture-groups-2026-01-16-15_00_07.png',
+]} />

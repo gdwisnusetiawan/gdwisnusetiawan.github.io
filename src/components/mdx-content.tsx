@@ -23,6 +23,8 @@ const CustomH2 = (props: any) => {
   )
 }
 
+import { BentoGallery } from '@/components/mdx/bento-gallery'
+
 const components = {
   h1: (props: any) => (
     <h1 {...props} className="text-3xl font-bold text-white mb-6 mt-10" />
@@ -46,6 +48,7 @@ const components = {
   code: (props: any) => (
     <code {...props} className="bg-white/10 rounded px-1.5 py-0.5 text-sm font-mono text-primary" />
   ),
+  BentoGallery,
 }
 
 const options = {

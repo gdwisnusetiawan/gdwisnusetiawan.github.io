@@ -8,6 +8,8 @@ tech: ["Laravel", "PostgreSQL", "Bootstrap", "Chart.js", "Laravel Excel", "DomPD
 links: {}
 ---
 
+import { BentoGallery } from '@/components/mdx/bento-gallery'
+
 ## **The Problem**
 
 City governments (Kominfo/Bappeda) struggled with fragmented governance.
@@ -30,3 +32,31 @@ The suite's value lies in removing human bias through code.
 
 - **The "Complexity Engine" (`App\Complexity::calculate`):** I wrote a weighted scoring algorithm that processes **8 technical vectors** (e.g., integration potential, user concurrency, database scale). It applies conditional multipliers (e.g., 2x for >50 tables) to mathematically classify projects, ensuring objective budget allocation.
 - **Polymorphic Data Aggregation:** The Evaluation System uses a **Polymorphic Design Pattern** to calculate maturity scores. The same calculation logic (`morphTo`) is reused across different entity levels (Provincial → Regency → Agency), adhering strictly to DRY principles while handling massive hierarchical data.
+
+## Visuals
+
+<BentoGallery images={[
+  '/assets/projects/spbe-suite/screencapture-dashboard-2026-01-16-19_14_06.png',
+  '/assets/projects/spbe-suite/screencapture-dashboard-2026-01-16-19_14_23.png',
+  '/assets/projects/spbe-suite/screencapture-dashboard-2026-01-16-19_14_34.png',
+  '/assets/projects/spbe-suite/screencapture-dashboard-2026-01-16-19_14_46.png',
+  '/assets/projects/spbe-suite/screencapture-dashboard-2026-01-16-19_14_59.png',
+  '/assets/projects/spbe-suite/screencapture-dashboard-2026-01-16-19_15_10.png',
+  '/assets/projects/spbe-suite/screencapture-dashboard-2026-01-16-19_15_19.png',
+  '/assets/projects/spbe-suite/screencapture-dashboard-2026-01-16-19_16_36.png',
+  '/assets/projects/spbe-suite/screencapture-todo-period-3-p-2025-2026-01-16-19_16_45.png',
+  '/assets/projects/spbe-suite/screencapture-todo-type-application-suggestion-2-2026-01-16-19_17_37 (1).png',
+  '/assets/projects/spbe-suite/screencapture-todo-type-application-suggestion-2-2026-01-16-19_17_37.png',
+  '/assets/projects/spbe-suite/screencapture-todo-type-application-suggestion-2-2026-01-16-19_17_54.png',
+  '/assets/projects/spbe-suite/screencapture-evaluation-2026-01-16-23_59_05.png',
+  '/assets/projects/spbe-suite/screencapture-evaluation-output-2026-01-16-23_59_22.png',
+  '/assets/projects/spbe-suite/screencapture-recap-2026-01-16-23_59_33.png',
+  '/assets/projects/spbe-suite/screencapture-home-2026-01-17-01_23_22.png',
+  '/assets/projects/spbe-suite/screencapture-level-2026-01-17-01_22_23.png',
+  '/assets/projects/spbe-suite/screencapture-level-create-1-2026-01-17-01_22_36.png',
+  '/assets/projects/spbe-suite/screencapture-level-result-Opd-0-2026-01-17-01_23_04.png',
+  '/assets/projects/spbe-suite/screencapture-master-aspect-2026-01-17-01_21_24.png',
+  '/assets/projects/spbe-suite/screencapture-master-criteria-2026-01-17-01_21_42.png',
+  '/assets/projects/spbe-suite/screencapture-master-domain-2026-01-17-01_21_16.png',
+  '/assets/projects/spbe-suite/screencapture-master-indicator-2026-01-17-01_21_32.png',
+]} />

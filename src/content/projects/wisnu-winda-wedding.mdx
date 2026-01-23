@@ -8,11 +8,13 @@ tech: ["Nuxt.js", "TailwindCSS", "Pinia", "SQLite", "Prisma", "Bcrypt", "JWT", "
 links: {}
 ---
 
-### **The Problem**
+import { BentoGallery } from '@/components/mdx/bento-gallery'
+
+## **The Problem**
 
 Traditional wedding invitations are static and difficult to track. Couples often struggle with managing guest lists across spreadsheets, and digital alternatives are often just static HTML pages that lack interactivity or personalization for the guest.
 
-### **The Solution**
+## **The Solution**
 
 I engineered a **Full-Stack Nuxt Application** that serves as both a guest portal and an admin tool.
 
@@ -20,7 +22,7 @@ I engineered a **Full-Stack Nuxt Application** that serves as both a guest porta
 - **Guest Management Dashboard:** Built a secure `/admin` interface where the couple can create, update, and delete guest entries or family groups, replacing the need for messy Excel sheets.
 - **Interactive Event Hub:** Provides a central location for RSVP, location maps, and gift registries.
 
-### **Engineering Highlight: Reactive Multimedia Synchronization**
+## **Engineering Highlight: Reactive Multimedia Synchronization**
 
 The technical differentiator is the **State-Driven Audio Engine** in `pages/index.vue`.
 
@@ -29,3 +31,11 @@ The technical differentiator is the **State-Driven Audio Engine** in `pages/inde
     - When the user hits "Play" on the video (`isVideoPlaying = true`), the global background music automatically fades out/pauses.
     - When the video ends or pauses, the music resumes intelligently after a smooth 2-second buffer.
 - **Why it matters:** This attention to "micro-interactions" demonstrates a level of polish and UX awareness that separates "coding" from "product engineering."
+
+## Visuals
+
+<BentoGallery images={[
+  '/assets/projects/wisnu-winda-wedding/screencapture-2026-01-17-23_13_54.png',
+  '/assets/projects/wisnu-winda-wedding/screencapture-admin-2026-01-17-23_14_34.png',
+  '/assets/projects/wisnu-winda-wedding/screencapture-admin-guests-2026-01-17-23_14_46.png',
+]} />

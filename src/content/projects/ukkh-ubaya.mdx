@@ -8,6 +8,8 @@ tech: ["Laravel", "Bootstrap", "MySQL"]
 links: {}
 ---
 
+import { BentoGallery } from '@/components/mdx/bento-gallery'
+
 ## **The Problem**
 
 Student organizations face a unique data chaos: High turnover. Leadership changes every year (Structural), while event committees form and dissolve every few months (Ad-hoc). Managing this dynamic "who is doing what" data on spreadsheets led to lost history and confusing role overlaps.
@@ -27,3 +29,17 @@ The technical core is the **Context-Aware Role Pattern**.
 - **The Challenge:** The title "Treasurer" exists in two contexts: the *Main Organization* (1-year term) and the *Valentine Event* (1-month term). Treating them as the same entity breaks database normalization; treating them as fully separate creates duplicate data.
 - **The Logic:** I implemented a **Dual-Context Relationship**. A central `Positions` table acts as a master dictionary. I built two parallel pivot structures (`Managements` and `Committees`) that bind Members to Positions within a specific *Time Context*.
 - **The Impact:** This flattened a complex 3-way relationship (Context → Position → Member) into a simple UI where admins can assign a "Treasurer" without worrying about which database table it belongs to.
+
+## Visuals
+
+<BentoGallery images={[
+  '/assets/projects/ukkh-ubaya/screencapture-2026-01-17-22_59_33.png',
+  '/assets/projects/ukkh-ubaya/screencapture-committees-2026-01-17-23_03_15.png',
+  '/assets/projects/ukkh-ubaya/screencapture-events-2026-01-17-23_02_53.png',
+  '/assets/projects/ukkh-ubaya/screencapture-managements-2026-01-17-23_02_08.png',
+  '/assets/projects/ukkh-ubaya/screencapture-members-s160419001-2026-01-17-23_04_10.png',
+  '/assets/projects/ukkh-ubaya/screencapture-members-s160419001-2026-01-17-23_04_16.png',
+  '/assets/projects/ukkh-ubaya/screencapture-periods-3-2026-01-17-23_02_23.png',
+  '/assets/projects/ukkh-ubaya/screencapture-profiles-2026-01-17-22_59_50.png',
+  '/assets/projects/ukkh-ubaya/screencapture-programs-2026-01-17-23_02_43.png',
+]} />
