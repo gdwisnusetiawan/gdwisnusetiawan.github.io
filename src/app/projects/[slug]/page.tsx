@@ -1,5 +1,5 @@
-import { getProjectBySlug, getProjectSlugs, getNextProject } from '@/lib/mdx'
-import { MDXContent } from '@/components/mdx-content'
+import { getProjectBySlug, getProjectSlugs, getNextProject } from '@/lib/projects'
+import { ProjectContent } from '@/components/project-content'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, ExternalLink, Github, ArrowUpRight, ArrowRight } from 'lucide-react'
@@ -97,7 +97,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
       </header>
       
       <main className="max-w-4xl mb-24">
-        <MDXContent source={content} />
+        <ProjectContent source={content} />
       </main>
 
       {/* Next Project Footer */}

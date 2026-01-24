@@ -7,6 +7,7 @@ import { motion } from 'framer-motion'
 
 const navItems = [
   { name: 'Work', path: '/projects' }, // Reference image shows "Work"
+  { name: 'Blog', path: '/blog' },
   { name: 'About', path: '/about' },
   { name: 'Dashboard', path: '/dashboard' },
 ]
@@ -22,7 +23,7 @@ export function Navbar() {
         </Link>
         <div className="flex gap-8">
           {navItems.map((item) => {
-            const isActive = pathname === item.path
+            const isActive = pathname === item.path || pathname.startsWith(`${item.path}/`)
             return (
               <Link
                 key={item.path}

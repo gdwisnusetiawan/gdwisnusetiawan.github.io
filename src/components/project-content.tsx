@@ -51,12 +51,14 @@ const components = {
   BentoGallery,
 }
 
+import rehypeSlug from 'rehype-slug'
+
 const options = {
   theme: 'one-dark-pro',
   keepBackground: false,
 }
 
-export function MDXContent({ source }: { source: string }) {
+export function ProjectContent({ source }: { source: string }) {
   return (
     <div className="prose prose-invert max-w-none">
       <MDXRemote
@@ -64,7 +66,7 @@ export function MDXContent({ source }: { source: string }) {
         components={components}
         options={{
           mdxOptions: {
-            rehypePlugins: [[rehypePrettyCode, options]],
+            rehypePlugins: [[rehypePrettyCode, options], rehypeSlug],
           },
         }}
       />
