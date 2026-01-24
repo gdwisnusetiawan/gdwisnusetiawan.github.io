@@ -23,6 +23,17 @@ export function BlogList({ posts }: BlogListProps) {
     )
   })
 
+  if (posts.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-24 text-center w-full min-h-[50vh]">
+        <div className="w-full max-w-md bg-white/5 border border-white/10 rounded-xl p-8 backdrop-blur-sm">
+             <h3 className="text-xl font-bold text-white mb-2">System Log Empty</h3>
+             <p className="text-muted-foreground font-mono text-sm">No engineering logs have been initialized yet.</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="space-y-8">
       {/* Search Input */}

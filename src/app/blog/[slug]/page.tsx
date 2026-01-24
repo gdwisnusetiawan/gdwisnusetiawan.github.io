@@ -6,6 +6,11 @@ import { extractHeadings } from '@/lib/toc'
 
 export async function generateStaticParams() {
   const posts = getBlogCalls()
+  
+  if (posts.length === 0) {
+    return [{ slug: 'no-posts' }]
+  }
+
   return posts.map((post) => ({
     slug: post.slug,
   }))
@@ -13,6 +18,12 @@ export async function generateStaticParams() {
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
+  
+  // Handle the dummy slug for empty state
+  if (slug === 'no-posts') {
+    notFound()
+  }
+
   const post = getBlogPostBySlug(slug)
 
   if (!post) {
