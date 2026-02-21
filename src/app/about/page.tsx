@@ -110,12 +110,12 @@ export default function AboutPage() {
                     logo: "/assets/logos/mceasy.png",
                     type: "Full-time",
                     date: "Aug 2022 - Present",
-                    duration: "3 yrs 6 mos", // Based on 2026 current date
+                    duration: "3 yrs 7 mos", // Based on 2026 current date
                     location: "Surabaya, East Java, Indonesia",
                     mode: "On-site"
                 },
                 {
-                    role: "Web Application Developer",
+                    role: "Lead Full Stack Software Engineer",
                     company: "PT Energi Djiwa Muda",
                     logo: "/assets/logos/edm.jpg",
                     type: "Full-time",
@@ -125,8 +125,8 @@ export default function AboutPage() {
                     mode: "On-site"
                 },
                 {
-                    role: "Web Developer",
-                    company: "CV Sinar Laut",
+                    role: "Software Engineer",
+                    company: "CV Sinar Laut (Trackscope)",
                     logo: "/assets/logos/trackscope.png",
                     type: "Full-time",
                     date: "Nov 2020 - Jun 2021",
@@ -135,7 +135,7 @@ export default function AboutPage() {
                     mode: "On-site"
                 },
                 {
-                    role: "Web Developer",
+                    role: "Software Engineer",
                     company: "PT. Tatacipta Teknologi Indonesia",
                     logo: "/assets/logos/tati.png",
                     type: "Internship",
