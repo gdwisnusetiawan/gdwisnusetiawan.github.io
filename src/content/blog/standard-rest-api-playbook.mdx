@@ -1,0 +1,185 @@
+---
+title: 'My Standard REST API Playbook for Clean and Predictable Backends'
+date: '2026-02-25'
+description: 'A deep dive into my personal standards for building predictable, scalable REST APIs, covering routing, bulk operations, response wrappers, and status codes.'
+tags: ['REST API', 'Backend', 'System Design', 'Engineering Log']
+---
+
+A REST API is more than just a way to move data between a client and a server. It is a design standard that uses HTTP methods and URLs to define your entire resource structure—from Create to Read, Update, and Delete operations. 
+
+When designing a backend, the primary goal should be to create a clean and predictable API. Because REST is the industry standard, building it correctly means frontend clients and third-party services can integrate with it effortlessly. 
+
+Over time, I have developed a set of personal preferences and standards for how I build REST APIs. Here is the playbook I use to keep my endpoints structured, scalable, and easy to understand.
+
+---
+
+## 1. URLs are for Resources, Methods are for Actions
+
+The most fundamental rule is to name your URL endpoints with the resource's object name, rather than a verb. Because the endpoint represents a collection of resources, always use the plural form of the noun.
+
+Instead of using `POST /pay`, use `POST /payments`. This clearly indicates you are adding a new record to the `payments` collection.
+
+Combine this with standard HTTP methods to handle all basic operations:
+
+* **`GET /products`** – Fetch a list of products.
+* **`POST /products`** – Add a new resource to the collection.
+* **`GET /products/1`** – Fetch a single resource by its identifier.
+* **`PUT /products/1`** or **`PATCH /products/1`** – Edit a single resource.
+* **`DELETE /products/1`** – Delete a single resource.
+
+### Handling Nested Resources
+When resources have parent-child relationships, use nested paths. For example, if a product has multiple variants:
+
+* **`GET /products/1/variants`** – Get all variants of product 1.
+* **`GET /products/1/variants/1`** – Get a specific variant.
+* **`POST /products/1/variants`** – Create a new variant for product 1.
+* **`PATCH /products/1/variants/1`** – Edit a specific variant.
+* **`DELETE /products/1/variants/1`** – Delete a specific variant.
+
+You can continue this pattern for deeper nested resources when necessary.
+
+---
+
+## 2. The Difference Between PUT and PATCH
+
+Both `PUT` and `PATCH` are used for updating, but they serve different purposes:
+
+* **`PUT`** is used when you want to update the *entire* resource. For example, if a product has `id`, `name`, and `price` attributes, a `PUT` request should contain the data to replace the entire object at once.
+* **`PATCH`** is used for partial updates. If you only want to update the `name` of the product while keeping the existing `price` exactly as it is, you use `PATCH`.
+
+---
+
+## 3. The Bulk Operation Dilemma
+
+Standard REST is great for single operations, but what if you need to create, update, or delete many resources at once? 
+
+For updating, you can use the collection path (`PATCH /products` or `PUT /products`) and pass an array of objects in the body, ensuring each object includes its identifier:
+
+```json
+{
+  "products": [
+    { "id": 1, "name": "A" },
+    { "id": 2, "name": "B" }
+  ]
+}
+```
+
+Deleting multiple resources follows a similar pattern:
+
+```json
+{
+  "ids": [1, 2, 3]
+}
+```
+
+### Creating Multiple Resources
+
+Creating bulk resources is trickier because `POST /products` is already used for single creations. There are a few ways to handle this, but here is how I evaluate the options:
+
+1. **Accept an array on the main endpoint (My Preference):** Change the `POST /products` endpoint to accept an array of resources. If you want to create one resource, you just send an array with a single object. This keeps the behavior consistent and means you only have to maintain one endpoint.
+2. **Accept two different body structures:** The backend scans the request body and executes different logic depending on whether it receives an object or an array. I don't recommend this because having an endpoint with variable request structures feels unpredictable.
+3. **Create a dedicated bulk endpoint:** Adding `/bulk` to the path (e.g., `POST /products/bulk`). I generally avoid this because it breaks the standard that anything following `/products/` should be an ID.
+
+If I am building an API from scratch, I always go with Option 1. Options 2 or 3 are only useful if you are working with a legacy system where changing the existing endpoint would break current clients.
+
+*(Note on bulk deletes: Some sources argue that `DELETE` methods should not have a request body, or that certain proxies will strip the body entirely. A safe workaround is to use `POST /products/delete`, returning a `204 No Content` or `202 Accepted` if it requires long asynchronous processing).*
+
+---
+
+## 4. Structuring Requests and Responses
+
+When formatting JSON responses, predictability is key. I adhere to a few strict rules:
+
+### The Universal "data" Wrapper
+
+I always wrap the primary response data inside a `"data"` key.
+
+```json
+{
+  "data": [
+    {
+      "id": 1,
+      "name": "Product A",
+      "price": 10000,
+      "category": {
+        "id": 1,
+        "name": "Category A"
+      }
+    }
+  ],
+  "metadata": {
+    "per_category": {
+      "total": 1
+    }
+  },
+  "pagination": {
+    "total": 150,
+    "per_page": 10,
+    "current_page": 1,
+    "last_page": 15,
+    "first_page_url": "",
+    "last_page_url": "",
+    "next_page_url": "",
+    "prev_page_url": "",
+    "path": "",
+    "from": 1,
+    "to": 10
+  }
+}
+```
+
+Because the URL path already specifies the resource type (`/products`), we know the array inside `"data"` is a list of products.
+
+Wrapping the data allows you to safely add side-loaded information later. For list endpoints, you inevitably need pagination. By placing a `"pagination"` object right next to `"data"`, you give the client everything they need to navigate the list. If you need to provide a summary—like the total number of products grouped by category—you can easily add a `"metadata"` key without breaking the core data structure.
+
+### Flat Requests, Nested Responses
+
+For request bodies (like a `POST`), I prefer flat keys for relational data:
+
+```json
+{
+  "name": "Product A",
+  "price": 10000,
+  "category_id": 1
+}
+```
+
+However, in the response, I nest the relational data:
+```json
+{
+    "name": "Product A",
+    "price": 10000,
+    "category_id": 1,
+    "category": { 
+        "id": 1, 
+        "name": "Category A"
+    }
+}
+```
+
+When returning a single resource (`GET /products/1`), I keep the object structure identical to the objects found inside the list endpoint's array. I also avoid redundant field names. Since we know the context is a product, using `product_id` or `product_name` is unnecessary. Just use `id` and `name`. It looks cleaner and is much easier to read.
+
+---
+
+## 5. Use Proper HTTP Status Codes
+
+I used to return `200 OK` for almost every endpoint, even if it was a bad request. Evolving your API design means utilizing the correct HTTP status codes to communicate exactly what happened.
+
+* **`201 Created`:** Use this when a `POST` request successfully creates a resource. I usually return just the new ID in the body, allowing the client to fetch the full object later if needed.
+```json
+{
+    "data": {
+        "id": 1
+    }
+}
+```
+* **`200 OK`:** Use this for successful `GET`, `PUT`, and `PATCH` requests.
+* **`204 No Content`:** Use this for `DELETE` requests where the operation was successful but there is no body data to return.
+
+---
+
+## What's Next?
+
+These are my personal preferences and the patterns I have found most effective for keeping an API scalable and easy for teams to integrate with. Not every standard will suit every project, but consistency is what matters most.
+
+In a future post, I'll dive into the other half of API design: handling error responses, request/response headers, and dealing with content types beyond JSON.
