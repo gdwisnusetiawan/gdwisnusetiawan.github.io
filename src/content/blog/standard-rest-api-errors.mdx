@@ -1,0 +1,115 @@
+---
+title: 'My Standard REST API Playbook for Handling Failed Responses'
+date: '2026-03-08'
+description: 'A deep dive into standardizing REST API error responses, utilizing proper HTTP status codes, and maintaining clean architecture.'
+tags: ['REST API', 'Backend', 'System Design', 'Engineering Log']
+---
+
+Previously, I outlined my playbook for structuring REST API requests and successful responses. Now, I want to cover the other half of backend design: handling failures.
+
+When building scalable SaaS applications and custom ERP systems, how you fail is just as important as how you succeed. If your error responses are inconsistent, you force your frontend team to guess what went wrong. Predictability across all endpoints is essential for maintaining team velocity and clean architecture.
+
+Here is how I structure failed responses and utilize proper **HTTP status codes** to communicate errors clearly.
+
+## The 400 Bad Request
+
+If a client sends a request that violates your business rules, you need to firmly reject it and tell them exactly why. This is where the **400 Bad Request** comes in.
+
+For example, when creating a new product via a **`POST /products`** request, you might require that the product name is unique. If a client attempts to create a product with a name that already exists:
+
+```json
+{
+  "name": "Product A",
+  "price": 10000
+}
+```
+
+You return a **400 Bad Request** status code alongside a structured response body that pinpoints the problem:
+
+```json
+{
+  "errors": [
+    {
+      "code": "PRODUCT_NAME_DUPLICATED",
+      "message": "Cannot create product with the same name.",
+      "path": ["name"]
+    }
+  ]
+}
+```
+
+I base this structure heavily on Zod, the TypeScript schema validation library. The root object contains an `"errors"` array because a single request can trigger multiple validation failures simultaneously.
+
+Inside the array, each error object provides exactly what the client needs:
+* **`code`**: A standardized string identifier. In a large REST API, you will have hundreds of validation rules. Using explicit codes (like `"PRODUCT_NAME_DUPLICATED"`) standardizes communication between the backend and frontend.
+* **`message`**: A human-readable description of the error.
+* **`path`**: An array indicating exactly which field caused the request to fail. In this case, `"name"`.
+
+### Handling Expected Values
+
+Following the Zod error formatting pattern, we can also add an `"expected"` field. This is incredibly useful for enum validations. 
+
+Suppose we have an `order` resource, and clients can update its `status` field using a **`PATCH /orders/1`** request. If the allowed statuses are only `PENDING`, `PROCESSING`, and `DELIVERED`, and the client sends:
+
+```json
+{
+  "status": "PAID"
+}
+```
+
+The validation fails. The resulting **400 Bad Request** response clearly indicates what the backend expected:
+
+```json
+{
+  "errors": [
+    {
+      "code": "ORDER_STATUS_INVALID",
+      "message": "Cannot set order status to an unallowed value.",
+      "path": ["status"],
+      "expected": ["PENDING", "PROCESSING", "DELIVERED"]
+    }
+  ]
+}
+```
+
+## Beyond the 400: Standardizing Client Errors
+
+The **400 Bad Request** handles business logic and data validation, which is why it requires a detailed JSON response body. However, the client can fail in other ways—by lacking permissions, requesting missing data, or using the wrong HTTP method. 
+
+For these scenarios, I rely strictly on the **HTTP status codes** themselves to do the talking, usually without an accompanying JSON response body.
+
+### 401 Unauthorized
+
+Every API request needs to verify the client's identity—typically via a bearer token, basic credentials, or an API key. If a client sends an unknown, missing, or expired token, you reject the request immediately with a **401 Unauthorized**. This status code specifically means: *I do not know who you are, so you cannot make this request.*
+
+### 403 Forbidden
+
+Unlike a 401, a **403 Forbidden** means: *I know exactly who you are, but you do not have permission to do this.* 
+
+For example, your system might divide product access into distinct create, read, update, and delete permissions. If a user with only "read" access attempts to send a **`POST /products`** request, they are fully authenticated, but they lack the authorization for that specific action. Return a **403 Forbidden**.
+
+### 404 Not Found
+
+We are all familiar with the browser **404 Not Found** page. The REST API equivalent operates on the same logic. 
+
+If a client requests a specific resource that does not exist in the database (e.g., **`GET /products/999`**), the requested target is not found. You can also return this status if the path itself is incorrect, such as a client calling **`GET /product/1`** (missing the plural 's') when your mapped route is **`/products/:id`**. 
+
+### 405 Method Not Allowed
+
+Clients must define the HTTP method (**`GET`**, **`POST`**, **`PUT`**, **`PATCH`**, **`DELETE`**) for a request. 
+
+If your routing is set up for **`GET /products/:id`**, **`PATCH /products/:id`**, and **`DELETE /products/:id`**, and a client attempts to send a **`POST /products/1`**, the path exists, but the action does not. The proper response is a **405 Method Not Allowed**. The same applies if they attempt a **`PATCH /products`** on your collection endpoint.
+
+## 500 Internal Server Error
+
+Client errors are only one side of the equation. When something breaks on your end—like attempting to access an index on an empty array or failing to connect to the database—the default response must be a **500 Internal Server Error**. 
+
+When a 500 occurs, it means the server failed to process a valid request due to an unhandled exception or an infrastructure issue. This requires immediate action from your team. 
+
+To maintain system reliability, you must set up monitoring mechanisms. Every time a 500 status is thrown, your logging tools should capture the request information, trace the error, and fire an alert so you can patch the bug before it impacts more users.
+
+## What's Next?
+
+Predictable **HTTP status codes** and structured error bodies eliminate frontend guesswork and enforce architectural standards across your team. 
+
+Next, I will outline my playbook for request and response headers, along with handling content types beyond JSON.
