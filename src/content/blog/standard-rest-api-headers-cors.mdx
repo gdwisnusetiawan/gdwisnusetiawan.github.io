@@ -1,0 +1,99 @@
+---
+title: 'My Standard REST API Playbook: HTTP Headers and CORS'
+date: '2026-03-26'
+description: 'A practical guide to structuring HTTP headers for authentication, content negotiation, and CORS in scalable REST APIs.'
+tags: ['REST API', 'Backend', 'Security', 'Engineering Log']
+---
+
+In this continuation of my REST API playbook series, we will discuss HTTP request and response headers. These are the foundational headers I rely on to handle authentication, content negotiation, and state management when building scalable, production-ready REST APIs.
+
+## Authorization
+
+The `Authorization` header is your primary mechanism to authenticate and authorize clients accessing your API. Typically, this is handled via Bearer tokens, Basic Auth, or API keys. While they serve the same fundamental purpose, their implementations differ.
+
+### Basic Auth
+With Basic Authentication, the client sends a username and password encoded in Base64 format. The server then decodes these credentials to verify a match. If they match, the server grants the client access to execute the request.
+
+```javascript
+const username = 'myuser';
+const password = 'mypassword';
+
+// 1. Combine credentials
+const credentials = `${username}:${password}`;
+
+// 2. Encode in Base64
+// btoa() is available in browsers (window.btoa)
+const encodedCredentials = btoa(credentials);
+
+// 3. Construct the header value
+const authHeaderValue = `Basic ${encodedCredentials}`;
+
+// 4. Send the request with the Authorization header
+fetch('https://api.example.com', {
+    headers: new Headers({
+        'Authorization': authHeaderValue
+    })
+})
+.then(response => {
+    if (!response.ok) {
+        throw new Error('Authentication failed');
+    }
+    return response.json();
+})
+.then(data => console.log(data))
+.catch(error => console.error(error));
+```
+
+### Bearer Tokens (JWT)
+Alternatively, you can use a Bearer token backed by a JSON Web Token (JWT). The client authenticates using their username and password to log in and generate the JWT. The payload usually contains essential identity data like `user_id`, `email`, and `role`, alongside a server-side secret and an explicit expiration time. 
+
+Armed with this token, the client can make subsequent requests to the API as long as the token is valid and not expired. In most modern architectures, this JWT is treated as stateless.
+
+```javascript
+const secret = process.env.JWT_SECRET;
+
+const payload = {
+  userId: user._id,
+  email: user.email,
+  role: user.role,
+};
+// Sign the token with the secret and set an expiration time
+const token = jwt.sign(payload, secret, { expiresIn: '1h' });
+```
+
+### API Keys
+To use a stateful approach, generating specific API keys is standard practice. These keys are stored in your database, allowing you to track exactly who is reading the data based on the API key used for the request. 
+
+While you technically could place an API key in the `Authorization` header, the industry standard is to pass it via a custom header—typically `X-API-KEY`.
+
+## Content-Type
+
+The `Content-Type` header is critical for content negotiation. It explicitly dictates the media type being sent in the request or response body. 
+
+For REST APIs, `application/json` is the undisputed standard. I highly recommend that your API server define strict `Content-Type` validation to dictate exactly what formats are allowed. 
+
+Another common type you will frequently encounter is `multipart/form-data`, which is essential when clients need to upload a file to the server, like an image, PDF, or Excel spreadsheet. 
+
+**Note:** Always include the `Content-Type` header in your server responses as well, so the client knows exactly how to parse the payload they are receiving.
+
+## Cookie
+
+I frequently rely on cookies to store the session ID, which allows users to stay logged in without needing to authenticate again. 
+
+When a user logs in using their credentials to generate an access token, the server can send a `Set-Cookie` response header. This instructs the browser to safely store a cookie in a key-value pair format, often alongside an expiration duration. 
+
+On subsequent requests, the client's browser automatically attaches a `Cookie` header containing the previously generated token. The server then validates the session ID from this `Cookie` header. 
+
+**Pro Tip:** In my REST APIs, I typically check *both* the `Cookie` and `Authorization` headers. This offers flexibility: a web browser can securely transmit the session ID using the `Cookie` header, while a mobile app or another backend service can pass the token using the `Authorization` header.
+
+## Origin and CORS
+
+When building APIs that manage requests from web browsers, handling Cross-Origin Resource Sharing (CORS) correctly is non-negotiable. Browsers use the `Origin` header to tell your server where a request is coming from. Your server must then respond with a specific set of `Access-Control-*` headers to dictate what that origin is permitted to do.
+
+Here is a pragmatic breakdown of the core CORS headers and how they work together:
+
+* **`Origin`**: A request header automatically attached by the browser on cross-origin requests, indicating the source domain (e.g., `https://myfrontend.com`).
+* **`Access-Control-Allow-Origin`**: The server's response header specifying which origins may access the API. You can echo back the client's `Origin` to explicitly allow it, or use the wildcard `*` to allow all origins (though `*` cannot be used alongside credentials).
+* **`Access-Control-Allow-Methods`**: Instructs the browser which HTTP methods (`GET`, `POST`, `PUT`, `DELETE`, `OPTIONS`) are permitted for the specified endpoint. This is typically returned during a preflight `OPTIONS` request.
+* **`Access-Control-Allow-Headers`**: Specifies which custom headers (like `Authorization`, `X-API-KEY`, or `Content-Type`) the client is explicitly allowed to send in the actual request.
+* **`Access-Control-Allow-Credentials`**: Set to `true` if your API needs to accept cookies, authorization headers, or TLS client certificates from a different origin. **Crucial detail:** If this is `true`, `Access-Control-Allow-Origin` *cannot* be the wildcard `*`; it must be the explicitly allowed origin.
